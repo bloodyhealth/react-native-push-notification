@@ -1,5 +1,8 @@
 package com.dieam.reactnativepushnotification.modules;
 
+import com.google.firebase.messaging.FirebaseMessagingService;
+import com.google.firebase.messaging.RemoteMessage;
+
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.Application;
@@ -28,8 +31,15 @@ import static android.content.Context.ACTIVITY_SERVICE;
 import static com.dieam.reactnativepushnotification.modules.RNPushNotification.LOG_TAG;
 
 public class RNReceivedMessageHandler {
+    private FirebaseMessagingService mFirebaseMessagingService;
+
+    public RNReceivedMessageHandler(@NonNull FirebaseMessagingService service) {
+        this.mFirebaseMessagingService = service;
+    }
+
     public void handleReceivedMessage(RemoteMessage message) {
         String from = message.getFrom();
+        RemoteMessage.Notification remoteNotification = message.getNotification();
         final Bundle bundle = new Bundle();
         // Putting it from remoteNotification first so it can be overriden if message
         // data has it
